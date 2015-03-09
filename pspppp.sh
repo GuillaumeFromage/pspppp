@@ -5,7 +5,7 @@ cp asdf asdf.tmp
 # TODO: convert in perl and expect a filename using GetOptions ?
 # TODO: make a temporary directory (would be easier in perl)
 INDEP="sexecat catage diplômecat blanchitude RecatPol"
-DEP="ActionSupCat OpinionSupCat ReconnaissanceSupCat SupCat"
+DEP="ActionSupCat OpinionSupCat ReconnaissanceSupCat SupCat sexecat catage diplômecat blanchitude RecatPol"
 # TODO: this should default to all the variables.
 DATA="p n dir"
 # TODO: this should be parametrized
@@ -38,11 +38,18 @@ Y=0;
 echo -en "|\t\t\t";
 for A in $INDEP 
 do 
-  echo -en "| $A\t" ; 
+  echo -en "| $A\t\t" ; 
 done ; 
 for I in $DEP
 do 
-  echo -en "|\n| $I\t\t";  
+  if (( $(echo "${#I}>15" | bc) )) ;
+  then 
+     echo -en "|\n| $I\t";  
+  else
+     echo -en "|\n| $I\t\t";  
+  fi
+ 
+  
   for J in $INDEP
   do 
     for K in $DATA
@@ -85,7 +92,17 @@ do
     # TODO: we need the option to print in green, red, yellow, if p<0.05, p>.10, 0.5<p<0.1 ; it needs to be compatible w/ less
     # so we can scroll horizontally
     # TODO: in html mode, it would be super easy to just toss the whole chi2 command output as an ajax crap
-    echo -en "|p=$P;n=$N,$DIR\t" ;
+    
+    if (( $(echo "$P<0.05" | bc) )) ; 
+    then 
+      P="\e[1;32m$P\e[0m"
+    elif (( $(echo "$P<0.1" | bc) )) ; 
+    then
+      P="\e[1;33m$P\e[0m"
+    fi ;
+    # we wrap all in red FTW as anyways the inner should be green or yellow otherwise
+    P="\e[1;31m$P\e[0m"
+    echo -en "| p=$P;n=$N,$DIR\t" ;
     COUNT=$((COUNT+1))
     PRETTYCOUNT=`printf %02d%s $COUNT`
     X=$((X+1))
