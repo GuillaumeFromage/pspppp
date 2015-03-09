@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+#TODO: convert to sh ? there is odd bashisms in here
 
 cp asdf asdf.tmp
 # TODO: convert in perl and expect a filename using GetOptions ?
@@ -69,9 +70,9 @@ do
             # TODO: when variable labels are too long, this get borked and spew some error messages from bc
             if (( $(echo "$(cat shitfucq | grep -A 6 residual | tail -n 1 | cut -d \# -f 3 | cut -d \| -f 1 | tr -s '[:space:]') > 0" | bc)  )) ;
             then 
-              DIR='==>'; 
+              DIR='<='; 
             else 
-              DIR='<=='; 
+              DIR='=>'; 
             fi ;
           else 
             DIR='WTF'
