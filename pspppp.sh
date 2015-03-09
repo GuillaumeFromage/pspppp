@@ -69,9 +69,10 @@ do
           # to say "the direction is positive" ; but we don't, so lets get a new table w/ just the residual
 
           # On AVALUE and DVALUE 
-          # AVALUE and DVALUE are both shit... if you cross var a that has value 1 or 2 and var b that has the same values, you'd
-          # want something like in * (so you get that first quadrant feel), but with dvalue you just go second, instead of fourth,
-          # which are both fucking counter intuitive
+          # AVALUE and DVALUE are both inappropriate... if you cross var a that has value 1 or 2 and var b that has the same values, you'd
+          # want something that look like in the * example below (so you get that first quadrant feel), but with dvalue you just go second, 
+          # instead of fourth, which are both fucking counter intuitive (if quadrants are far: 
+          # http://en.wikipedia.org/wiki/Quadrant_%28plane_geometry%29 )
           # *  B 1 2  | DVALUE   B 2 1 | AVALUE   B 1 2
           #  A 2  _/  |        A 2 \_  |        A 1 \_
           #    1 /    |          1   \ |          2   \
