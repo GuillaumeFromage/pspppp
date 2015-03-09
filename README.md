@@ -8,7 +8,9 @@ designed front ends of SPSS 22 or some other shit.
 This start from what folks really do with SPSS: rub all of a set of variable X
 against another set of variable Y, checking for significative p, and the 
 direction of the correlation. We don't know of care about all the other 
-undecipherable bullshit that SPSS is trying to feed us.
+undecipherable bullshit that SPSS is trying to feed us, or if we do, we need
+those values for all the other entry in the table, not just for one single 
+fucking entry at a time.
 
 Basically, you would define a bunch of variables in SPSS and import your date
 in there, and then, you would juste have to create a asdf file that would 
