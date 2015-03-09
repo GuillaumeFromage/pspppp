@@ -4,8 +4,8 @@
 cp asdf asdf.tmp
 # TODO: convert in perl and expect a filename using GetOptions ?
 # TODO: make a temporary directory (would be easier in perl)
-INDEP="sexecat catage diplômecat blanchitude RecatPol"
-DEP="ActionSupCat OpinionSupCat ReconnaissanceSupCat SupCat sexecat catage diplômecat blanchitude RecatPol"
+DEP="sexecat catage diplômecat blanchitude RecatPol"
+INDEP="ActionSupCat OpinionSupCat ReconnaissanceSupCat SupCat sexecat catage diplômecat blanchitude RecatPol"
 # TODO: this should default to all the variables.
 DATA="p n dir"
 # TODO: this should be parametrized
@@ -77,9 +77,9 @@ do
             # TODO: when variable labels are too long, this get borked and spew some error messages from bc
             if (( $(echo "$(cat shitfucq | grep -A 6 residual | tail -n 1 | cut -d \# -f 3 | cut -d \| -f 1 | tr -s '[:space:]') > 0" | bc)  )) ;
             then 
-              DIR='/'; 
-            else 
               DIR='\\'; 
+            else 
+              DIR='/'; 
             fi ;
           else 
             DIR='WTF'
@@ -103,7 +103,12 @@ do
     fi ;
     # we wrap all in red FTW as anyways the inner should have green or yellow inside it
     P="\e[1;31m$P\e[0m"
-    echo -en "| p=$P;n=$N,$DIR\t" ;
+    if (( $(echo "${#J}>15" | bc) )) ;
+    then 
+      echo -en "| p=$P,n=$N,$DIR\t\t" ;
+    else
+      echo -en "| p=$P,n=$N,$DIR\t" ;
+    fi
     COUNT=$((COUNT+1))
     PRETTYCOUNT=`printf %02d%s $COUNT`
     X=$((X+1))
