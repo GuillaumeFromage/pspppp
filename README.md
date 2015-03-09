@@ -26,3 +26,7 @@ datasets in the future, so I'll fix this thing.
 Oh, yeah, and it will pollute your current directory with a million garbage 
 files, and its output stinks, and it work one time out of five, sorry, its
 just some shit I've did instead of doing the things I had to do for school.
+
+Also, its probably fair game if this get ported to perl or some language that
+would support any form of fucking datastructures, because obviously this is
+just not the right way of processing pspp's output.
