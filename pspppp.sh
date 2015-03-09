@@ -4,8 +4,8 @@
 cp asdf asdf.tmp
 # TODO: convert in perl and expect a filename using GetOptions ?
 # TODO: make a temporary directory (would be easier in perl)
-DEP="sexecat catage diplômecat blanchitude RecatPol"
-INDEP="ActionSupCat OpinionSupCat ReconnaissanceSupCat SupCat sexecat catage diplômecat blanchitude RecatPol"
+DEP="sexecat catage diplômecat blanchitude RecatPol RecatPol2"
+INDEP="ActionSupCat OpinionSupCat ReconnaissanceSupCat SupCat sexecat catage diplômecat blanchitude RecatPol RecatPol2"
 # TODO: this should default to all the variables.
 DATA="p n dir"
 # TODO: this should be parametrized
@@ -67,6 +67,16 @@ do
           
           # at this point, we should just have had those values in the tables, and be able to extract the values to process the data 
           # to say "the direction is positive" ; but we don't, so lets get a new table w/ just the residual
+
+          # On AVALUE and DVALUE 
+          # AVALUE and DVALUE are both shit... if you cross var a that has value 1 or 2 and var b that has the same values, you'd
+          # want something like in * (so you get that first quadrant feel), but with dvalue you just go second, instead of fourth,
+          # which are both fucking counter intuitive
+          # *  B 1 2  | DVALUE   B 2 1 | AVALUE   B 1 2
+          #  A 2  _/  |        A 2 \_  |        A 1 \_
+          #    1 /    |          1   \ |          2   \
+ 
+           
           cat asdf | sed -e "\$aCROSSTABS /TABLES=$J BY $I /FORMAT=AVALUE TABLES PIVOT /STATISTICS=CHISQ /CELLS=RESIDUAL." | pspp > shitfucq
           # if we have only 2 values in total as an independant variable (otherwise, I'd have to find a statbook to figure
           # out how to calculate the fucking thing). That's because its not something I've figured out how to get from PSPP
@@ -77,9 +87,10 @@ do
             # TODO: when variable labels are too long, this get borked and spew some error messages from bc
             if (( $(echo "$(cat shitfucq | grep -A 6 residual | tail -n 1 | cut -d \# -f 3 | cut -d \| -f 1 | tr -s '[:space:]') > 0" | bc)  )) ;
             then 
-              DIR='\\'; 
-            else 
+              # The reason why these things are this way is explained in the section "On AVALUE and DVALUE" above
               DIR='/'; 
+            else 
+              DIR='\\'; 
             fi ;
           else 
             DIR='WTF'
