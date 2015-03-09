@@ -1,31 +1,39 @@
 #!/bin/sh
 
 cp asdf asdf.tmp
-
+# TODO: convert in perl and expect a filename using GetOptions ?
+# TODO: make a temporary directory (would be easier in perl)
 INDEP="sexecat catage diplômecat blanchitude RecatPol"
-DEP="sexecat catage diplômecat blanchitude RecatPol"
+DEP="ActionSupCat OpinionSupCat ReconnaissanceSupCat SupCat"
+# TODO: this should default to all the variables.
 DATA="p n dir"
+# TODO: this should be parametrized
+
 # first pass we just get all the tables to be generated at the end
 for I in $DEP
 do 
   for J in $INDEP
   do 
-
-#   would have been better to issue a sentinel here, but here's how PRINT does not work in SPSS. You can't "hello world".
-#   sed -e "\$aPRINT / '$I versus $J'. " -i asdf.tmp
-    
+    # TODO: this is all wrong, if we run pspp -O format=csv, the output is ugly as butts but it does spews parsable CSV
+    # would have been better to issue a sentinel here, but here's how PRINT does not work in SPSS. You can't "hello world".
+    # sed -e "\$aPRINT / '$I versus $J'. " -i asdf.tmp
+    # TODO: actually, there is an echo command...
     sed -e "\$aCROSSTABS /TABLES=$J BY $I /FORMAT=AVALUE TABLES PIVOT /STATISTICS=CHISQ /CELLS=COUNT TOTAL." -i asdf.tmp
   done ; 
 done
  
 cat asdf.tmp | pspp > asdf.tmp.out
 csplit -sz asdf.tmp.out /Summary./ {*}
+# TODO: tempdir ftw
+
 COUNT=0;
 PRETTYCOUNT=`printf %02d%s $COUNT`
 X=O;
 Y=0;
 # we now have a fuck tonne of tiny files containing one chi2 each... lets fucking process
 # the table header
+# TODO: seriously, the output should be templatable. It would be sooooooooooooo easy to use HTML, Tex and Bash
+# and use the damn perl format http://perldoc.perl.org/perlform.html
 echo -en "|\t\t\t";
 for A in $INDEP 
 do 
@@ -73,7 +81,9 @@ do
            ;;
       esac ;
     done ;
-    # TODO: we need to print in green if p<0.05 correlation is happening, red otherwise
+    # TODO: we need the option to print in green, red, yellow, if p<0.05, p>.10, 0.5<p<0.1 ; it needs to be compatible w/ less
+    # so we can scroll horizontally
+    # TODO: in html mode, it would be super easy to just toss the whole chi2 command output as an ajax crap
     echo -en "|p=$P;n=$N,$DIR\t" ;
     COUNT=$((COUNT+1))
     PRETTYCOUNT=`printf %02d%s $COUNT`
