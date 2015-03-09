@@ -2,7 +2,7 @@
 
 cp asdf asdf.tmp
 
-INDEP="ActionSupCat OpinionSupCat ReconnaissanceSupCat SupCat "
+INDEP="sexecat catage diplômecat blanchitude RecatPol"
 DEP="sexecat catage diplômecat blanchitude RecatPol"
 DATA="p n dir"
 # first pass we just get all the tables to be generated at the end
@@ -58,6 +58,7 @@ do
           then 
             # oh well, nice, we have a 4 entry table, with first line either -x, +x or +x, -x ; let's just check if the 
             # first number is above 0
+            # TODO: when variable labels are too long, this get borked and spew some error messages from bc
             if (( $(echo "$(cat shitfucq | grep -A 6 residual | tail -n 1 | cut -d \# -f 3 | cut -d \| -f 1 | tr -s '[:space:]') > 0" | bc)  )) ;
             then 
               DIR='==>'; 
