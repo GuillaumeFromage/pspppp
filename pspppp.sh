@@ -38,7 +38,7 @@ Y=0;
 echo -en "|\t\t\t";
 for A in $INDEP 
 do 
-  echo -en "| $A\t\t" ; 
+  echo -en "| $A\t" ; 
 done ; 
 for I in $DEP
 do 
@@ -56,9 +56,9 @@ do
     do 
       case $K in
         p) 
-          P=`grep 'Pearson Chi-Square' "xx$PRETTYCOUNT" | cut -f 3 -d \| | tr -s '[:space:]' | tr -d \#` ;;
+          P=`grep 'Pearson Chi-Square' "xx$PRETTYCOUNT" | cut -f 3 -d \| | tr -s '[:space:]' | tr -d \# | tr -d '[:space:]'` ;;
         n) 
-          N=`grep 'N of Valid Cases' "xx$PRETTYCOUNT" | cut -f 3 -d \# | tr -d \| | tr -s '[:space:]'`  ;;
+          N=`grep 'N of Valid Cases' "xx$PRETTYCOUNT" | cut -f 3 -d \# | tr -d \| | tr -s '[:space:]' | tr -d '[:space:]'`  ;;
         dir) 
           # This is the direction of the correlation. It is this thing:
           # http://www.strath.ac.uk/aer/materials/4dataanalysisineducationalresearch/unit4/correlationsdirectionandstrength/
@@ -77,16 +77,15 @@ do
             # TODO: when variable labels are too long, this get borked and spew some error messages from bc
             if (( $(echo "$(cat shitfucq | grep -A 6 residual | tail -n 1 | cut -d \# -f 3 | cut -d \| -f 1 | tr -s '[:space:]') > 0" | bc)  )) ;
             then 
-              DIR='<='; 
+              DIR='/'; 
             else 
-              DIR='=>'; 
+              DIR='\\'; 
             fi ;
           else 
             DIR='WTF'
           fi ;
           rm shitfucq
-          
-           ;;
+          ;;
       esac ;
     done ;
     # TODO: we need the option to print in green, red, yellow, if p<0.05, p>.10, 0.5<p<0.1 ; it needs to be compatible w/ less
@@ -95,12 +94,14 @@ do
     
     if (( $(echo "$P<0.05" | bc) )) ; 
     then 
+      # green!
       P="\e[1;32m$P\e[0m"
     elif (( $(echo "$P<0.1" | bc) )) ; 
     then
+      # yellow!
       P="\e[1;33m$P\e[0m"
     fi ;
-    # we wrap all in red FTW as anyways the inner should be green or yellow otherwise
+    # we wrap all in red FTW as anyways the inner should have green or yellow inside it
     P="\e[1;31m$P\e[0m"
     echo -en "| p=$P;n=$N,$DIR\t" ;
     COUNT=$((COUNT+1))
